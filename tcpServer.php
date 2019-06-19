@@ -79,7 +79,7 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{4}) == 0x03 &&
         ord($data{5}) == 0x34;
     if (!$isValidDldy) {
-        parseDldy($data);
+        $response = parseDldy($data);
         file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dldy" . "--" . time() . "--" . uniqid() . ".txt", serialize($data)."\n\n\n".serialize($response));
 
         //发送设备通讯报文 电压电流
@@ -96,13 +96,14 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{4}) == 0x03 &&
         ord($data{5}) == 0x04;
     if (!$isValidDn) {
-        parseDn($data);
+        $response = parseDn($data);
         file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dn" . "--" . time() . "--" . uniqid() . ".txt", serialize($data)."\n\n\n".serialize($response));
 
         return;
     }
 });
-$server->on('close', function ($server, $fd) {
+$server->on('close', function ($server, $fd) use ($table)  {
+    $table->del($fd);
     echo "connection close: {$fd}\n";
 });
 $server->start();
