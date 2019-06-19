@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0a6a7eca-f8e3-4de2-bd36-f9711f55039b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phpstorm-stubs-swoole-master/swoole/swoole.php" beforeDir="false" afterPath="$PROJECT_DIR$/phpstorm-stubs-swoole-master/swoole/swoole.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tcpServer.php" beforeDir="false" afterPath="$PROJECT_DIR$/tcpServer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parseData.php" beforeDir="false" afterPath="$PROJECT_DIR$/parseData.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,8 +21,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tcpServer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="76" column="5" lean-forward="true" selection-start-line="76" selection-start-column="5" selection-end-line="76" selection-end-column="5" />
+            <state relative-caret-position="326">
+              <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
             </state>
           </provider>
         </entry>
@@ -31,8 +30,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/phpstorm-stubs-swoole-master/swoole/swoole.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="878" column="24" selection-start-line="878" selection-start-column="24" selection-end-line="878" selection-end-column="24" />
+            <state relative-caret-position="208">
+              <caret line="2252" column="20" selection-start-line="2252" selection-start-column="20" selection-end-line="2252" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -40,12 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/parseData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="419" selection-start-line="419" selection-end-line="428" selection-end-column="5" />
-              <folding>
-                <element signature="n#parseLdwd#0;n#!!top" />
-                <element signature="n#parseDldy#0;n#!!top" />
-              </folding>
+            <state relative-caret-position="3840">
+              <caret line="245" column="76" selection-start-line="245" selection-start-column="76" selection-end-line="245" selection-end-column="76" />
             </state>
           </provider>
         </entry>
@@ -88,13 +83,13 @@
         <option value="$PROJECT_DIR$/install.md" />
         <option value="$PROJECT_DIR$/test.php" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/parseData.php" />
         <option value="$PROJECT_DIR$/phpstorm-stubs-swoole-master/swoole/swoole.php" />
         <option value="$PROJECT_DIR$/tcpServer.php" />
+        <option value="$PROJECT_DIR$/parseData.php" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="304" />
     <option name="y" value="57" />
     <option name="width" value="1366" />
@@ -157,19 +152,18 @@
       <updated>1560817933713</updated>
       <workItem from="1560817934874" duration="6789000" />
       <workItem from="1560905324670" duration="181000" />
-      <workItem from="1560905517898" duration="4472000" />
+      <workItem from="1560905517898" duration="6264000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11442000" />
+    <option name="totallyTimeSpent" value="13234000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="304" y="57" width="1366" height="868" extended-state="0" />
-    <editor active="true" />
+    <frame x="-1" y="26" width="1922" height="1001" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4986339" visible="true" weight="0.16136363" />
-      <window_info id="Structure" order="1" sideWeight="0.50136614" side_tool="true" visible="true" weight="0.16136363" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49784482" visible="true" weight="0.11353944" />
+      <window_info id="Structure" order="1" sideWeight="0.5021552" side_tool="true" visible="true" weight="0.11353944" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -181,7 +175,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.24453552" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.46358383" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -231,26 +225,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/phpstorm-stubs-swoole-master/swoole/swoole.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="878" column="24" selection-start-line="878" selection-start-column="24" selection-end-line="878" selection-end-column="24" />
+        <state relative-caret-position="208">
+          <caret line="2252" column="20" selection-start-line="2252" selection-start-column="20" selection-end-line="2252" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/parseData.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="419" selection-start-line="419" selection-end-line="428" selection-end-column="5" />
-          <folding>
-            <element signature="n#parseLdwd#0;n#!!top" />
-            <element signature="n#parseDldy#0;n#!!top" />
-          </folding>
+        <state relative-caret-position="3840">
+          <caret line="245" column="76" selection-start-line="245" selection-start-column="76" selection-end-line="245" selection-end-column="76" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tcpServer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="76" column="5" lean-forward="true" selection-start-line="76" selection-start-column="5" selection-end-line="76" selection-end-column="5" />
+        <state relative-caret-position="326">
+          <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
         </state>
       </provider>
     </entry>
