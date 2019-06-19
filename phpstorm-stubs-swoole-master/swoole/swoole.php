@@ -876,6 +876,7 @@ namespace Swoole
         /**
          * @param $key   [required]
          * @param $field [optional]
+         * @return array
          */
         public function get ($key, $field = NULL) { }
 
@@ -2249,6 +2250,7 @@ class swoole_server{
     /**
     * @param $fd[required]
     * @param $reactor_id[optional]
+     * @return array
     */
     public function getClientInfo($fd,$reactor_id=null){}
 
