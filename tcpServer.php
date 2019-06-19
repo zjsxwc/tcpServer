@@ -12,7 +12,7 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) {
     $clientInfo = $server->getClientInfo($fd);
     $clientIp = $clientInfo["remote_ip"];
     file_put_contents(__DIR__ . "/log/" . $clientIp."--".time()."--".uniqid().".txt", serialize($data));
-    $server->send($fd, "Swoole: {$data}");
+    // $server->send($fd, "Swoole: {$data}");
     if (trim($data) === "bye") {
         $server->close($fd);
     }
