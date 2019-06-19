@@ -23,9 +23,13 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
 
     $deviceId = null;
     $tableData = $table->get($fd);
+    var_dump($tableData);
     if ($tableData) {
         $deviceId = $tableData["deviceId"];
     }
+    $table->set($fd, ["fd" => $fd, "deviceId" => trim($data), "lastRequestTime" => $currentTime]);
+
+    return;
 
     $isNewConnect = false;
 
@@ -62,8 +66,8 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{4}) == 0x03 &&
         ord($data{5}) == 0x54;
     if ($isValidLdwd) {
-        parseLdwd($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Ldwd" . "--" . time() . "--" . uniqid() . ".txt", serialize($data));
+        $response = parseLdwd($data);
+        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Ldwd" . "--" . time() . "--" . uniqid() . ".txt", serialize($data)."\n\n\n".serialize($response));
 
         //发送设备通讯报文 电压电流
         $message = "\x7b\x7b\x90\x01\x03\x12\x04\x00\x1a\x80\xb8\xe6\xfd\x7d\x7d";
@@ -80,7 +84,7 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{5}) == 0x34;
     if (!$isValidDldy) {
         parseDldy($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dldy" . "--" . time() . "--" . uniqid() . ".txt", serialize($data));
+        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dldy" . "--" . time() . "--" . uniqid() . ".txt", serialize($data)."\n\n\n".serialize($response));
 
         //发送设备通讯报文 电压电流
         $message = "\x7b\x7b\x90\x01\x03\x13\x00\x00\x02\xc0\x8f\xe6\xfd\x7d\x7d";
@@ -97,7 +101,7 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{5}) == 0x04;
     if (!$isValidDn) {
         parseDn($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dn" . "--" . time() . "--" . uniqid() . ".txt", serialize($data));
+        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dn" . "--" . time() . "--" . uniqid() . ".txt", serialize($data)."\n\n\n".serialize($response));
 
         return;
     }
