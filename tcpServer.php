@@ -23,13 +23,9 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
 
     $deviceId = null;
     $tableData = $table->get($fd);
-    var_dump($tableData);
     if ($tableData) {
         $deviceId = $tableData["deviceId"];
     }
-    $table->set($fd, ["fd" => $fd, "deviceId" => trim($data), "lastRequestTime" => $currentTime]);
-
-    return;
 
     $isNewConnect = false;
 
