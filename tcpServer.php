@@ -10,7 +10,7 @@ $server->on('connect', function ($server, $fd) {
 });
 
 
-$table = new Swoole\Table(1024);
+$table = new Swoole\Table(10240);
 $table->column('fd', swoole_table::TYPE_INT, 8);
 $table->column('deviceId', swoole_table::TYPE_STRING, 1024);
 $table->column('lastRequestTime', swoole_table::TYPE_INT, 8);
