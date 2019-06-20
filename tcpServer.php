@@ -19,15 +19,14 @@ $table->create();
 
 
 $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) {
-
     /** @var swoole_server $server */
 
     $currentTime = time();
 
     $deviceId = null;
-    $tableData = $table->get($fd);
-    if ($tableData) {
-        $deviceId = $tableData["deviceId"];
+    $row = $table->get($fd);
+    if ($row) {
+        $deviceId = $row["deviceId"];
     }
 
     $isRegisterDeviceId =
@@ -36,14 +35,23 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{2}) == 0x84;
     if ($isRegisterDeviceId) {
         $deviceId = substr($data, 3, 14);
+        if ($row) {
+            if ($row["deviceId"] != $deviceId) {
+                $server->close($fd);
+            }
+            return;
+        }
         $table->set($fd, ["fd" => $fd, "deviceId" => $deviceId, "lastRequestTime" => $currentTime, "timerId" => 0]);
-
         //发送设备同意注册报文
         $message = "\x7b\x7b\x84\xbf\x23\x7d\x7d";
         $server->send($fd, $message);
 
         $server->tick(10000, function ($timerId) use ($server, $fd, $table) {
             $row = $table->get($fd);
+            if (!$row) {
+                $server->clearTimer($timerId);
+                return;
+            }
             $row["timerId"] = $timerId;
             $table->set($fd, $row);
 
@@ -61,6 +69,8 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
             $message = "\x7b\x7b\x90\x01\x03\x13\x00\x00\x02\xc0\x8f\xe6\xfd\x7d\x7d";
             $server->send($fd, $message);
         });
+
+
         return;
     }
 
@@ -112,11 +122,6 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
     }
 });
 $server->on('Close', function ($server, $fd) use ($table) {
-    $row = $table->get($fd);
-    $timerId = $row["timerId"];
-    if ($timerId) {
-        $server->clearTimer($timerId);
-    }
     $table->del($fd);
     echo "connection close: {$fd}\n";
 });
