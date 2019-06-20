@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0a6a7eca-f8e3-4de2-bd36-f9711f55039b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/tcpServer.php" beforeDir="false" afterPath="$PROJECT_DIR$/tcpServer.php" afterDir="false" />
-    </list>
+    <list default="true" id="0a6a7eca-f8e3-4de2-bd36-f9711f55039b" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tcpServer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1858">
-              <caret line="117" column="8" lean-forward="true" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
+            <state relative-caret-position="60">
+              <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
             </state>
           </provider>
         </entry>
@@ -110,6 +108,11 @@
               <item name="ammeterTcpServer" type="b2602c69:ProjectViewProjectNode" />
               <item name="ammeterTcpServer" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ammeterTcpServer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ammeterTcpServer" type="462c0819:PsiDirectoryNode" />
+              <item name="log" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -155,17 +158,17 @@
       <workItem from="1560817934874" duration="6789000" />
       <workItem from="1560905324670" duration="181000" />
       <workItem from="1560905517898" duration="9358000" />
-      <workItem from="1560990347424" duration="6660000" />
+      <workItem from="1560990347424" duration="6930000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22988000" />
+    <option name="totallyTimeSpent" value="23258000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="26" width="1922" height="1001" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49772382" visible="true" weight="0.114605546" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49772382" visible="true" weight="0.114605546" />
       <window_info id="Structure" order="1" sideWeight="0.5022762" side_tool="true" visible="true" weight="0.114605546" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -178,7 +181,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.23815028" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.23815028" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -240,10 +243,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/log/deviceId_451234512345&#13;&#10;_Dldy--1560997520--5d0aee9038c76.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log/deviceId_451234512345&#13;&#10;_Dldy--1560997506--5d0aee82e8a34.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/tcpServer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1858">
-          <caret line="117" column="8" lean-forward="true" selection-start-line="117" selection-start-column="8" selection-end-line="117" selection-end-column="8" />
+        <state relative-caret-position="60">
+          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
         </state>
       </provider>
     </entry>

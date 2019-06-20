@@ -76,7 +76,6 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
             $server->send($fd, $message);
         });
 
-
         return;
     }
 
@@ -84,7 +83,6 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $server->close($fd);
         return;
     }
-
 
     $isValidLdwd = $data{0} == "{" &&
         $data{1} == "{" &&
@@ -99,7 +97,6 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         return;
     }
 
-
     $isValidDldy = $data{0} == "{" &&
         $data{1} == "{" &&
         ord($data{2}) == 0x90 &&
@@ -112,7 +109,6 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
 
         return;
     }
-
 
     $isValidDn = $data{0} == "{" &&
         $data{1} == "{" &&
@@ -127,6 +123,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         return;
     }
 });
+
 $server->on('Close', function ($server, $fd) use ($table) {
     $table->del($fd);
     echo "connection close: {$fd}\n";
