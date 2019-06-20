@@ -18,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tcpServer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+            <state relative-caret-position="16">
+              <caret line="58" column="24" lean-forward="true" selection-start-line="58" selection-start-column="24" selection-end-line="58" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -86,6 +86,7 @@
         <option value="$PROJECT_DIR$/phpstorm-stubs-swoole-master/swoole/swoole.php" />
         <option value="$PROJECT_DIR$/parseData.php" />
         <option value="$PROJECT_DIR$/tcpServer.php" />
+        <option value="$PROJECT_DIR$/debug.php" />
       </list>
     </option>
   </component>
@@ -107,11 +108,6 @@
             <path>
               <item name="ammeterTcpServer" type="b2602c69:ProjectViewProjectNode" />
               <item name="ammeterTcpServer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ammeterTcpServer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ammeterTcpServer" type="462c0819:PsiDirectoryNode" />
-              <item name="log" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -158,15 +154,16 @@
       <workItem from="1560817934874" duration="6789000" />
       <workItem from="1560905324670" duration="181000" />
       <workItem from="1560905517898" duration="9358000" />
-      <workItem from="1560990347424" duration="6930000" />
+      <workItem from="1560990347424" duration="7772000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23258000" />
+    <option name="totallyTimeSpent" value="24100000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="26" width="1922" height="1001" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49772382" visible="true" weight="0.114605546" />
       <window_info id="Structure" order="1" sideWeight="0.5022762" side_tool="true" visible="true" weight="0.114605546" />
@@ -249,10 +246,17 @@
     <entry file="file://$PROJECT_DIR$/log/deviceId_451234512345&#13;&#10;_Dldy--1560997506--5d0aee82e8a34.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/debug.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tcpServer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+        <state relative-caret-position="16">
+          <caret line="58" column="24" lean-forward="true" selection-start-line="58" selection-start-column="24" selection-end-line="58" selection-end-column="24" />
         </state>
       </provider>
     </entry>

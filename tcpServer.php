@@ -53,7 +53,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $message = "\x7b\x7b\x84\xbf\x23\x7d\x7d";
         $server->send($fd, $message);
 
-        $server->tick(10000, function ($timerId) use ($server, $fd, $table) {
+        $server->tick(20000, function ($timerId) use ($server, $fd, $table) {
             echo sprintf("tick fd%d timerid %d\n", $fd, $timerId);
             $row = $table->get($fd);
             if (!$row) {
