@@ -16,7 +16,37 @@ $table->column('deviceId', swoole_table::TYPE_STRING, 1024);
 $table->column('lastRequestTime', swoole_table::TYPE_INT, 8);
 $table->create();
 
-$server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) {
+
+$server->on('WorkerStart', function ($server, $workerId) use ($table) {
+    /** @var swoole_server $server */
+    if ($workerId == 0) {
+        swoole_timer_tick(5000, function ($id) use ($server, $table) {
+            foreach ($table as $row) {
+                $fd = $row["fd"];
+
+                //发送指令获取设备通讯报文 漏电温度
+                $message = "\x7b\x7b\x90\x01\x03\x10\x00\x00\x2a\xc0\xd5\xe6\xfd\x7d\x7d";
+                $server->send($fd, $message);
+                sleep(1);
+
+                //发送指令获取设备通讯报文 电压电流
+                $message = "\x7b\x7b\x90\x01\x03\x12\x04\x00\x1a\x80\xb8\xe6\xfd\x7d\x7d";
+                $server->send($fd, $message);
+                sleep(1);
+
+                //发送指令获取设备通讯报文 电压电流
+                $message = "\x7b\x7b\x90\x01\x03\x13\x00\x00\x02\xc0\x8f\xe6\xfd\x7d\x7d";
+                $server->send($fd, $message);
+
+            }
+        });
+    }
+
+});
+
+
+$server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) {
+
     /** @var swoole_server $server */
 
     $currentTime = time();
@@ -27,8 +57,6 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $deviceId = $tableData["deviceId"];
     }
 
-    $isNewConnect = false;
-
     $isRegisterDeviceId =
         $data{0} == "{" &&
         $data{1} == "{" &&
@@ -36,23 +64,17 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
     if ($isRegisterDeviceId) {
         $deviceId = substr($data, 3, 14);
         $table->set($fd, ["fd" => $fd, "deviceId" => $deviceId, "lastRequestTime" => $currentTime]);
-        $isNewConnect = true;
+
+        //发送设备同意注册报文
+        $message = "\x7b\x7b\x84\xbf\x23\x7d\x7d";
+        $server->send($fd, $message);
+        return;
     }
 
     if (!$deviceId) {
         $server->close($fd);
         return;
     }
-
-    sleep(1);
-    if ($isNewConnect) {
-        //发送设备通讯报文漏电温度
-        $message = "\x7b\x7b\x90\x01\x03\x10\x00\x00\x2a\xc0\xd5\xe6\xfd\x7d\x7d";
-        $server->send($fd, $message);
-        return;
-    }
-
-
 
 
     $isValidLdwd = $data{0} == "{" &&
@@ -63,11 +85,8 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{5}) == 0x54;
     if ($isValidLdwd) {
         $response = parseLdwd($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Ldwd" . "--" . time() . "--" . uniqid() . ".txt", serialize($data)."\n\n\n".serialize($response));
+        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Ldwd" . "--" . time() . "--" . uniqid() . ".txt", serialize($data) . "\n\n\n" . serialize($response));
 
-        //发送设备通讯报文 电压电流
-        $message = "\x7b\x7b\x90\x01\x03\x12\x04\x00\x1a\x80\xb8\xe6\xfd\x7d\x7d";
-        $server->send($fd, $message);
         return;
     }
 
@@ -80,11 +99,8 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{5}) == 0x34;
     if (!$isValidDldy) {
         $response = parseDldy($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dldy" . "--" . time() . "--" . uniqid() . ".txt", serialize($data)."\n\n\n".serialize($response));
+        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dldy" . "--" . time() . "--" . uniqid() . ".txt", serialize($data) . "\n\n\n" . serialize($response));
 
-        //发送设备通讯报文 电压电流
-        $message = "\x7b\x7b\x90\x01\x03\x13\x00\x00\x02\xc0\x8f\xe6\xfd\x7d\x7d";
-        $server->send($fd, $message);
         return;
     }
 
@@ -97,12 +113,12 @@ $server->on('receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{5}) == 0x04;
     if (!$isValidDn) {
         $response = parseDn($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dn" . "--" . time() . "--" . uniqid() . ".txt", serialize($data)."\n\n\n".serialize($response));
+        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dn" . "--" . time() . "--" . uniqid() . ".txt", serialize($data) . "\n\n\n" . serialize($response));
 
         return;
     }
 });
-$server->on('close', function ($server, $fd) use ($table)  {
+$server->on('Close', function ($server, $fd) use ($table) {
     $table->del($fd);
     echo "connection close: {$fd}\n";
 });
