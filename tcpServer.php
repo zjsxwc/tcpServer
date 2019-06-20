@@ -2,8 +2,6 @@
 
 include_once "parseData.php";
 
-@mkdir(__DIR__ . "/log");
-
 $server = new swoole_server("0.0.0.0", 9504);
 $server->on('connect', function ($server, $fd) {
     echo "connection open: {$fd}\n";
@@ -92,7 +90,12 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{5}) == 0x54;
     if ($isValidLdwd) {
         $response = parseLdwd($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Ldwd" . "--" . time() . "--" . uniqid() . ".txt", serialize($data) . "\n\n\n" . serialize($response));
+
+        $response["type"] = "Ldwd";
+        $response["deviceId"] = $deviceId;
+        $response["time"] = time();
+
+        file_put_contents(__DIR__ . "/data.txt", json_encode($response)."\n", FILE_APPEND);
 
         return;
     }
@@ -105,7 +108,12 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{5}) == 0x34;
     if ($isValidDldy) {
         $response = parseDldy($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dldy" . "--" . time() . "--" . uniqid() . ".txt", serialize($data) . "\n\n\n" . serialize($response));
+
+        $response["type"] = "Dldy";
+        $response["deviceId"] = $deviceId;
+        $response["time"] = time();
+
+        file_put_contents(__DIR__ . "/data.txt", json_encode($response)."\n", FILE_APPEND);
 
         return;
     }
@@ -118,7 +126,12 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{5}) == 0x04;
     if ($isValidDn) {
         $response = parseDn($data);
-        file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dn" . "--" . time() . "--" . uniqid() . ".txt", serialize($data) . "\n\n\n" . serialize($response));
+
+        $response["type"] = "Dn";
+        $response["deviceId"] = $deviceId;
+        $response["time"] = time();
+
+        file_put_contents(__DIR__ . "/data.txt", json_encode($response)."\n", FILE_APPEND);
 
         return;
     }

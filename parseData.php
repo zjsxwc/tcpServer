@@ -1,5 +1,29 @@
 <?php
 
+define("DEBUG_PRINTF", true);
+
+function debugPrintf()
+{
+    $isDebug = false;
+    if (defined("DEBUG_PRINTF")) {
+        $isDebug = constant("DEBUG_PRINTF");
+    }
+    if (!$isDebug) {
+        return;
+    }
+
+    $argList = func_get_args();
+    $argString = "";
+    for ($i = 0; $i < count($argList); $i++) {
+        if ($i != (count($argList) - 1)) {
+            $argString .= "\$argList[" . $i . "], ";
+        } else {
+            $argString .= "\$argList[" . $i . "]";
+        }
+    }
+    $phpCode = sprintf("printf(%s);", $argString);
+    eval($phpCode);
+}
 
 /**
  * 01字符串 转换为 整数
@@ -7,21 +31,24 @@
  * @param int $bitsCount
  * @return int
  */
-function unsignedBinStrToInt($str, $bitsCount = 8) {
+function unsignedBinStrToInt($str, $bitsCount = 8)
+{
     if (strlen($str) != $bitsCount) {
         die("bitsCount error");
     }
     $int = null;
-    eval("\$int = 0b". $str.";");
+    eval("\$int = 0b" . $str . ";");
     return $int;
 }
+
 /**
  * 01字符串 转换为 有符号整数
  * @param string $str
  * @param int $bitsCount
  * @return int
  */
-function signedBinStrToInt($str, $bitsCount = 8) {
+function signedBinStrToInt($str, $bitsCount = 8)
+{
     if (strlen($str) != $bitsCount) {
         die("bitsCount error");
     }
@@ -34,12 +61,12 @@ function signedBinStrToInt($str, $bitsCount = 8) {
 }
 
 
-
 /**
  * @param string $data
  * @return mixed
  */
-function parseLdwd($data) {
+function parseLdwd($data)
+{
     $isValid = $data{0} == "{" &&
         $data{1} == "{" &&
         ord($data{2}) == 0x90 &&
@@ -62,9 +89,11 @@ function parseLdwd($data) {
     $offset = 0x00;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
-    printf("%08b ", $h); $response["通道类别_h"] = sprintf("%08b", $h);
+    debugPrintf("%08b ", $h);
+    $response["通道类别_h"] = sprintf("%08b", $h);
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    printf("%08b ", $l); $response["通道类别_l"] = sprintf("%08b", $l);
+    debugPrintf("%08b ", $l);
+    $response["通道类别_l"] = sprintf("%08b", $l);
     // $h 与 $l 总共16个bit， 每个bit值0表示电流检测回路 值1表示温度检测回路 ， $l 最 右边的bit表示回路1  $h 最左边的 bit 表示回路16
 
 
@@ -73,9 +102,11 @@ function parseLdwd($data) {
     $offset = 0x01;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
-    printf("%08b ", $h); $response["断线_h"] = sprintf("%08b", $h);
+    debugPrintf("%08b ", $h);
+    $response["断线_h"] = sprintf("%08b", $h);
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    printf("%08b ", $l); $response["断线_l"] = sprintf("%08b", $l);
+    debugPrintf("%08b ", $l);
+    $response["断线_l"] = sprintf("%08b", $l);
     // $h 与 $l 总共16个bit， 每个bit值0表示回路正常 值1表示回路断线 ， $l 最 右边的bit表示回路1  $h 最左边的 bit 表示回路16
 
 
@@ -84,9 +115,11 @@ function parseLdwd($data) {
     $offset = 0x02;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
-    printf("%08b ", $h); $response["短路_h"] = sprintf("%08b", $h);
+    debugPrintf("%08b ", $h);
+    $response["短路_h"] = sprintf("%08b", $h);
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    printf("%08b ", $l); $response["短路_l"] = sprintf("%08b", $l);
+    debugPrintf("%08b ", $l);
+    $response["短路_l"] = sprintf("%08b", $l);
     // $h 与 $l 总共16个bit， 每个bit值0表示回路正常 值1表示回路短路 ， $l 最 右边的bit表示回路1  $h 最左边的 bit 表示回路16
 
 
@@ -95,9 +128,11 @@ function parseLdwd($data) {
     $offset = 0x03;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
-    printf("%08b ", $h); $response["报警状态_h"] = sprintf("%08b", $h);
+    debugPrintf("%08b ", $h);
+    $response["报警状态_h"] = sprintf("%08b", $h);
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    printf("%08b ", $l); $response["报警状态_l"] = sprintf("%08b", $l);
+    debugPrintf("%08b ", $l);
+    $response["报警状态_l"] = sprintf("%08b", $l);
     // $h 与 $l 总共16个bit， 每个bit值0表示回路正常 值1表示回路报警 ， $l 最 右边的bit表示回路1  $h 最左边的 bit 表示回路16
 
 
@@ -107,8 +142,9 @@ function parseLdwd($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%d (0b%08b 0b%08b)", $value, $h, $l); $response["漏电测量值"] = sprintf("%d", $value);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%d (0b%08b 0b%08b)", $value, $h, $l);
+    $response["漏电测量值"] = sprintf("%d", $value);
 
 
     echo "\n第一路温度测量值:\n";
@@ -116,24 +152,27 @@ function parseLdwd($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = signedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["第一路温度测量值"] = sprintf("%.1f", $value/10.0);
+    $value = signedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["第一路温度测量值"] = sprintf("%.1f", $value / 10.0);
 
     echo "\n第二路温度测量值:\n";
     $offset = 0x07;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = signedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["第二路温度测量值"] = sprintf("%.1f", $value/10.0);
+    $value = signedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["第二路温度测量值"] = sprintf("%.1f", $value / 10.0);
 
     echo "\n第三路温度测量值:\n";
     $offset = 0x08;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = signedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["第三路温度测量值"] = sprintf("%.1f", $value/10.0);
+    $value = signedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["第三路温度测量值"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\n第四路温度测量值:\n";
@@ -141,8 +180,9 @@ function parseLdwd($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = signedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["第四路温度测量值"] = sprintf("%.1f", $value/10.0);
+    $value = signedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["第四路温度测量值"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\n漏电报警测量值:\n";
@@ -150,8 +190,9 @@ function parseLdwd($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%d (0b%08b 0b%08b)", $value, $h, $l); $response["漏电报警测量值"] = sprintf("%d", $value);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%d (0b%08b 0b%08b)", $value, $h, $l);
+    $response["漏电报警测量值"] = sprintf("%d", $value);
 
 
     echo "\n第一路温度报警值:\n";
@@ -159,8 +200,9 @@ function parseLdwd($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = signedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["第一路温度报警值"] = sprintf("%.1f", $value/10.0);
+    $value = signedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["第一路温度报警值"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\n第二路温度报警值:\n";
@@ -168,25 +210,27 @@ function parseLdwd($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = signedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["第二路温度报警值"] = sprintf("%.1f", $value/10.0);
+    $value = signedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["第二路温度报警值"] = sprintf("%.1f", $value / 10.0);
 
     echo "\n第三路温度报警值:\n";
     $offset = 0x18;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = signedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["第三路温度报警值"] = sprintf("%.1f", $value/10.0);
+    $value = signedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["第三路温度报警值"] = sprintf("%.1f", $value / 10.0);
 
     echo "\n第四路温度报警值:\n";
     $offset = 0x19;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = signedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["第四路温度报警值"] = sprintf("%.1f", $value/10.0);
-
+    $value = signedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["第四路温度报警值"] = sprintf("%.1f", $value / 10.0);
 
 
     //开入DI
@@ -194,9 +238,11 @@ function parseLdwd($data) {
     $offset = 0x28;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
-    printf("%08b ", $h); $response["开入DI_h"] = sprintf("%08b", $h);
+    debugPrintf("%08b ", $h);
+    $response["开入DI_h"] = sprintf("%08b", $h);
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    printf("%08b ", $l); $response["开入DI_l"] = sprintf("%08b", $l);
+    debugPrintf("%08b ", $l);
+    $response["开入DI_l"] = sprintf("%08b", $l);
     // $h 与 $l 总共16个bit， 每个bit值0表示DI打开 值1表示DI闭合 ， $l 最 右边的bit表示DI1  $h 最左边的 bit 表示DI16
 
 
@@ -205,9 +251,11 @@ function parseLdwd($data) {
     $offset = 0x29;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
-    printf("%08b ", $h); $response["开出DO_h"] = sprintf("%08b", $h);
+    debugPrintf("%08b ", $h);
+    $response["开出DO_h"] = sprintf("%08b", $h);
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    printf("%08b ", $l); $response["开出DO_l"] = sprintf("%08b", $l);
+    debugPrintf("%08b ", $l);
+    $response["开出DO_l"] = sprintf("%08b", $l);
     // $h 与 $l 总共16个bit， 每个bit值0表示DO闭合 值1表示DO打开 ， $l 最 右边的bit表示DO1  $h 最左边的 bit 表示DO16
 
 
@@ -220,7 +268,8 @@ function parseLdwd($data) {
  * @param string $data
  * @return mixed
  */
-function parseDldy($data) {
+function parseDldy($data)
+{
     $isValid = $data{0} == "{" &&
         $data{1} == "{" &&
         ord($data{2}) == 0x90 &&
@@ -242,16 +291,18 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["A相相电压（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["A相相电压（V）"] = sprintf("%.1f", $value / 10.0);
 
     echo "\nB相相电压（V）:\n";
     $offset = 1;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["B相相电压（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["B相相电压（V）"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\nC相相电压（V）:\n";
@@ -259,8 +310,9 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["C相相电压（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["C相相电压（V）"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\nUAB线电压（V）:\n";
@@ -268,8 +320,9 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["UAB线电压（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["UAB线电压（V）"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\nUBC线电压（V）:\n";
@@ -277,9 +330,9 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["UBC线电压（V）"] = sprintf("%.1f", $value/10.0);
-
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["UBC线电压（V）"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\nUCA线电压（V）:\n";
@@ -287,9 +340,9 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["UCA线电压（V）"] = sprintf("%.1f", $value/10.0);
-
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["UCA线电压（V）"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\n电压状态位:\n";
@@ -297,7 +350,8 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    printf("高字节 0x%02x 低字节 0x%02x\n", $h, $l); $response["电压状态位"] = sprintf("高字节 0x%02x 低字节 0x%02x", $h, $l);
+    debugPrintf("高字节 0x%02x 低字节 0x%02x\n", $h, $l);
+    $response["电压状态位"] = sprintf("高字节 0x%02x 低字节 0x%02x", $h, $l);
 
 
     echo "\nA相过压值（V）:\n";
@@ -305,48 +359,54 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["A相过压值（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["A相过压值（V）"] = sprintf("%.1f", $value / 10.0);
 
     echo "\nB相过压值（V）:\n";
     $offset = 11;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["B相过压值（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["B相过压值（V）"] = sprintf("%.1f", $value / 10.0);
 
     echo "\nC相过压值（V）:\n";
     $offset = 12;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["C相过压值（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["C相过压值（V）"] = sprintf("%.1f", $value / 10.0);
 
     echo "\nA相欠压值（V）:\n";
     $offset = 13;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["A相欠压值（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["A相欠压值（V）"] = sprintf("%.1f", $value / 10.0);
 
     echo "\nB相欠压值（V）:\n";
     $offset = 14;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["B相欠压值（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["B相欠压值（V）"] = sprintf("%.1f", $value / 10.0);
 
     echo "\nC相欠压值（V）:\n";
     $offset = 15;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.1f (0b%08b 0b%08b)", $value/10.0, $h, $l); $response["C相欠压值（V）"] = sprintf("%.1f", $value/10.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.1f (0b%08b 0b%08b)", $value / 10.0, $h, $l);
+    $response["C相欠压值（V）"] = sprintf("%.1f", $value / 10.0);
 
 
     echo "\nA相电流（A）:\n";
@@ -354,8 +414,9 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.3f (0b%08b 0b%08b)", $value/1000.0, $h, $l); $response["A相电流（A）"] = sprintf("%.3f", $value/1000.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.3f (0b%08b 0b%08b)", $value / 1000.0, $h, $l);
+    $response["A相电流（A）"] = sprintf("%.3f", $value / 1000.0);
 
 
     echo "\nB相电流（A）:\n";
@@ -363,17 +424,18 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.3f (0b%08b 0b%08b)", $value/1000, $h, $l); $response["B相电流（A）"] = sprintf("%.3f", $value/1000.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.3f (0b%08b 0b%08b)", $value / 1000, $h, $l);
+    $response["B相电流（A）"] = sprintf("%.3f", $value / 1000.0);
 
     echo "\nC相电流（A）:\n";
     $offset = 18;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.3f (0b%08b 0b%08b)", $value/1000, $h, $l); $response["C相电流（A）"] = sprintf("%.3f", $value/1000.0);
-
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.3f (0b%08b 0b%08b)", $value / 1000, $h, $l);
+    $response["C相电流（A）"] = sprintf("%.3f", $value / 1000.0);
 
 
     echo "\n电流状态:\n";
@@ -381,7 +443,8 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    printf("0x%02x 0x%02x", $h, $l); $response["电流状态"] = sprintf("0x%02x 0x%02x", $h, $l);
+    debugPrintf("0x%02x 0x%02x", $h, $l);
+    $response["电流状态"] = sprintf("0x%02x 0x%02x", $h, $l);
 
 
     echo "\nA相过流值（A）:\n";
@@ -389,24 +452,27 @@ function parseDldy($data) {
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.3f (0b%08b 0b%08b)", $value/1000, $h, $l); $response["A相过流值（A）"] = sprintf("%.3f", $value/1000.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.3f (0b%08b 0b%08b)", $value / 1000, $h, $l);
+    $response["A相过流值（A）"] = sprintf("%.3f", $value / 1000.0);
 
     echo "\nB相过流值（A）:\n";
     $offset = 24;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.3f (0b%08b 0b%08b)", $value/1000, $h, $l); $response["B相过流值（A）"] = sprintf("%.3f", $value/1000.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.3f (0b%08b 0b%08b)", $value / 1000, $h, $l);
+    $response["B相过流值（A）"] = sprintf("%.3f", $value / 1000.0);
 
     echo "\nC相过流值（A）:\n";
     $offset = 25;
     $byteOffset = $offset * 2;
     $h = ord($data{$dataStartPos + $byteOffset});
     $l = ord($data{$dataStartPos + $byteOffset + 1});
-    $value = unsignedBinStrToInt(sprintf("%08b", $h) .  sprintf("%08b", $l), 16); //数值换算翻转高低位
-    printf("%.3f (0b%08b 0b%08b)", $value/1000, $h, $l); $response["C相过流值（A）"] = sprintf("%.3f", $value/1000.0);
+    $value = unsignedBinStrToInt(sprintf("%08b", $h) . sprintf("%08b", $l), 16); //数值换算翻转高低位
+    debugPrintf("%.3f (0b%08b 0b%08b)", $value / 1000, $h, $l);
+    $response["C相过流值（A）"] = sprintf("%.3f", $value / 1000.0);
 
     echo "\n";
 
@@ -414,12 +480,12 @@ function parseDldy($data) {
 }
 
 
-
 /**
  * @param string $data
  * @return mixed
  */
-function parseDn($data) {
+function parseDn($data)
+{
     $isValid = $data{0} == "{" &&
         $data{1} == "{" &&
         ord($data{2}) == 0x90 &&
@@ -443,9 +509,10 @@ function parseDn($data) {
     $byteOffset = $offset * 2;
     $h2 = ord($data{$dataStartPos + $byteOffset});
     $l2 = ord($data{$dataStartPos + $byteOffset + 1});
-//    printf("0x%02x 0x%02x 0x%02x 0x%02x \n", $h1, $l1, $h2, $l2);
+//   debugPrintf("0x%02x 0x%02x 0x%02x 0x%02x \n", $h1, $l1, $h2, $l2);
     $value = unsignedBinStrToInt(sprintf("%08b", $h1) . sprintf("%08b", $l1) . sprintf("%08b", $h2) . sprintf("%08b", $l2), 32);
-    printf("%.3f \n", $value / 1000.0); $response["吸收有功功率（kWh）"] = sprintf("%.3f", $value/1000.0);
+    debugPrintf("%.3f \n", $value / 1000.0);
+    $response["吸收有功功率（kWh）"] = sprintf("%.3f", $value / 1000.0);
 
     echo "\n";
 
