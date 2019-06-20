@@ -20,6 +20,11 @@ $table->create();
 $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) {
     /** @var swoole_server $server */
 
+    if (trim($data) == "bye") {
+        $server->close($fd);
+        return;
+    }
+
     $currentTime = time();
 
     $deviceId = null;
@@ -32,6 +37,9 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $data{0} == "{" &&
         $data{1} == "{" &&
         ord($data{2}) == 0x84;
+    if (trim($data) == "123451234512345") {
+        $isRegisterDeviceId = true;
+    }
     if ($isRegisterDeviceId) {
         $deviceId = substr($data, 3, 14);
         if ($row) {
@@ -46,6 +54,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $server->send($fd, $message);
 
         $server->tick(10000, function ($timerId) use ($server, $fd, $table) {
+            echo sprintf("tick fd%d timerid %d\n", $fd, $timerId);
             $row = $table->get($fd);
             if (!$row) {
                 $server->clearTimer($timerId);
@@ -97,7 +106,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{3}) == 0x01 &&
         ord($data{4}) == 0x03 &&
         ord($data{5}) == 0x34;
-    if (!$isValidDldy) {
+    if ($isValidDldy) {
         $response = parseDldy($data);
         file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dldy" . "--" . time() . "--" . uniqid() . ".txt", serialize($data) . "\n\n\n" . serialize($response));
 
@@ -111,7 +120,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         ord($data{3}) == 0x01 &&
         ord($data{4}) == 0x03 &&
         ord($data{5}) == 0x04;
-    if (!$isValidDn) {
+    if ($isValidDn) {
         $response = parseDn($data);
         file_put_contents(__DIR__ . "/log/" . "deviceId_{$deviceId}_Dn" . "--" . time() . "--" . uniqid() . ".txt", serialize($data) . "\n\n\n" . serialize($response));
 
