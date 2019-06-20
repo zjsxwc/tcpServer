@@ -35,14 +35,14 @@ var text = \"\";
 for (var json of jsonList) {
     var line = '';
     for (var prop in json) {
-        if (in_array(prop,['type','date'])) {
+        if (in_array(prop,['type','date', 'deviceId'])) {
             continue;
         }
         line += prop + \": \" + json[prop] + \", \"; 
     }
     line += \"\\n\\n\";
     var typeMap = {'Dn': '电能', 'Ldwd': '漏电温度', 'Dldy': '电流电压'};
-    line =typeMap[json['type']] + ' '+ json['date'] + ' ' + line;
+    line =typeMap[json['type']] + ' '+ json['date'] + ' '+ json['deviceId'] + ' ' + line;
     text += line;
 }
 textPre.textContent = text;
