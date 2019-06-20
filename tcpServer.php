@@ -14,7 +14,6 @@ $table = new Swoole\Table(10240);
 $table->column('fd', swoole_table::TYPE_INT, 8);
 $table->column('deviceId', swoole_table::TYPE_STRING, 1024);
 $table->column('lastRequestTime', swoole_table::TYPE_INT, 8);
-$table->column('timerId', swoole_table::TYPE_INT, 8);
 $table->create();
 
 
@@ -41,7 +40,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
             }
             return;
         }
-        $table->set($fd, ["fd" => $fd, "deviceId" => $deviceId, "lastRequestTime" => $currentTime, "timerId" => 0]);
+        $table->set($fd, ["fd" => $fd, "deviceId" => $deviceId, "lastRequestTime" => $currentTime]);
         //发送设备同意注册报文
         $message = "\x7b\x7b\x84\xbf\x23\x7d\x7d";
         $server->send($fd, $message);
@@ -52,8 +51,6 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
                 $server->clearTimer($timerId);
                 return;
             }
-            $row["timerId"] = $timerId;
-            $table->set($fd, $row);
 
             //发送指令获取设备通讯报文 漏电温度
             $message = "\x7b\x7b\x90\x01\x03\x10\x00\x00\x2a\xc0\xd5\xe6\xfd\x7d\x7d";
