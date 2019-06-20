@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('Asia/Shanghai');
+
 include_once "parseData.php";
 
 $server = new swoole_server("0.0.0.0", 9504);
@@ -94,6 +96,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $response["type"] = "Ldwd";
         $response["deviceId"] = $deviceId;
         $response["time"] = time();
+        $response["date"] = date("Y-m-d H:i:s", time());
 
         file_put_contents(__DIR__ . "/data.txt", json_encode($response)."\n", FILE_APPEND);
 
@@ -112,6 +115,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $response["type"] = "Dldy";
         $response["deviceId"] = $deviceId;
         $response["time"] = time();
+        $response["date"] = date("Y-m-d H:i:s", time());
 
         file_put_contents(__DIR__ . "/data.txt", json_encode($response)."\n", FILE_APPEND);
 
@@ -130,6 +134,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $response["type"] = "Dn";
         $response["deviceId"] = $deviceId;
         $response["time"] = time();
+        $response["date"] = date("Y-m-d H:i:s", time());
 
         file_put_contents(__DIR__ . "/data.txt", json_encode($response)."\n", FILE_APPEND);
 
