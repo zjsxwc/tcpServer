@@ -4,7 +4,7 @@ include_once "parseData.php";
 
 @mkdir(__DIR__ . "/log");
 
-$server = new swoole_server("0.0.0.0", 9503);
+$server = new swoole_server("0.0.0.0", 9504);
 $server->on('connect', function ($server, $fd) {
     echo "connection open: {$fd}\n";
 });
