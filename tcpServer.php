@@ -13,7 +13,7 @@ $server->on('connect', function ($server, $fd) {
 $table = new Swoole\Table(10240);
 $table->column('fd', swoole_table::TYPE_INT, 8);
 $table->column('deviceId', swoole_table::TYPE_STRING, 1024);
-$table->column('lastRequestTime', swoole_table::TYPE_INT, 8);
+$table->column('lastRequestMessage', swoole_table::TYPE_INT, 4);
 $table->create();
 
 
@@ -48,7 +48,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
             }
             return;
         }
-        $table->set($fd, ["fd" => $fd, "deviceId" => $deviceId, "lastRequestTime" => $currentTime]);
+        $table->set($fd, ["fd" => $fd, "deviceId" => $deviceId, "lastRequestMessage" => 0]);
         //发送设备同意注册报文
         $message = "\x7b\x7b\x84\xbf\x23\x7d\x7d";
         $server->send($fd, $message);
@@ -60,19 +60,25 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
                 $server->clearTimer($timerId);
                 return;
             }
-
-            //发送指令获取设备通讯报文 漏电温度
-            $message = "\x7b\x7b\x90\x01\x03\x10\x00\x00\x2a\xc0\xd5\xe6\xfd\x7d\x7d";
-            $server->send($fd, $message);
-            sleep(1);
-
-            //发送指令获取设备通讯报文 电压电流
-            $message = "\x7b\x7b\x90\x01\x03\x12\x04\x00\x1a\x80\xb8\xe6\xfd\x7d\x7d";
-            $server->send($fd, $message);
-            sleep(1);
-
-            //发送指令获取设备通讯报文 电压电流
-            $message = "\x7b\x7b\x90\x01\x03\x13\x00\x00\x02\xc0\x8f\xe6\xfd\x7d\x7d";
+            $lastRequestMessage = intval($row["lastRequestMessage"]) % 3;
+            $requestMessage = 0;
+            if ($lastRequestMessage == 0) {
+                $requestMessage = 1;
+                //发送指令获取设备通讯报文 漏电温度
+                $message = "\x7b\x7b\x90\x01\x03\x10\x00\x00\x2a\xc0\xd5\xe6\xfd\x7d\x7d";
+            }
+            if ($lastRequestMessage == 1) {
+                $requestMessage = 2;
+                //发送指令获取设备通讯报文 电压电流
+                $message = "\x7b\x7b\x90\x01\x03\x12\x04\x00\x1a\x80\xb8\xe6\xfd\x7d\x7d";
+            }
+            if ($lastRequestMessage == 2) {
+                $requestMessage = 3;
+                //发送指令获取设备通讯报文 电压电流
+                $message = "\x7b\x7b\x90\x01\x03\x13\x00\x00\x02\xc0\x8f\xe6\xfd\x7d\x7d";
+            }
+            $row["lastRequestMessage"] = $requestMessage;
+            $table->set($fd, $row);
             $server->send($fd, $message);
         });
 
