@@ -9,7 +9,7 @@ include_once "parseData.php";
 
 $table = new Swoole\Table(10240);
 $table->column('fd', swoole_table::TYPE_INT, 8);
-$table->column('deviceId', swoole_table::TYPE_STRING, 1024);
+$table->column('deviceId', swoole_table::TYPE_STRING, 32);
 $table->column('lastRequestMessage', swoole_table::TYPE_INT, 4);
 $table->create();
 
