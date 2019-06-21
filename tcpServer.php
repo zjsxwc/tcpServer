@@ -74,7 +74,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
             }
             if ($lastRequestMessage == 2) {
                 $requestMessage = 3;
-                //发送指令获取设备通讯报文 电压电流
+                //发送指令获取设备通讯报文 电能
                 $message = "\x7b\x7b\x90\x01\x03\x13\x00\x00\x02\xc0\x8f\xe6\xfd\x7d\x7d";
             }
             $row["lastRequestMessage"] = $requestMessage;
