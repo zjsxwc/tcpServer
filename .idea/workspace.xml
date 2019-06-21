@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a6a7eca-f8e3-4de2-bd36-f9711f55039b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parseData.php" beforeDir="false" afterPath="$PROJECT_DIR$/parseData.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tcpServer.php" beforeDir="false" afterPath="$PROJECT_DIR$/tcpServer.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,8 +21,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tcpServer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="63" column="32" selection-start-line="63" selection-start-column="32" selection-end-line="63" selection-end-column="32" />
+            <state relative-caret-position="72">
+              <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -57,8 +57,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/parseData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4932">
-              <caret line="274" column="32" selection-start-line="274" selection-start-column="32" selection-end-line="274" selection-end-column="32" />
+            <state relative-caret-position="36">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
             </state>
           </provider>
         </entry>
@@ -108,11 +108,11 @@
         <option value="$PROJECT_DIR$/install.md" />
         <option value="$PROJECT_DIR$/phpstorm-stubs-swoole-master/swoole/swoole.php" />
         <option value="$PROJECT_DIR$/debug.php" />
-        <option value="$PROJECT_DIR$/parseData.php" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/data.txt" />
         <option value="$PROJECT_DIR$/http.php" />
         <option value="$PROJECT_DIR$/test.php" />
+        <option value="$PROJECT_DIR$/parseData.php" />
         <option value="$PROJECT_DIR$/tcpServer.php" />
       </list>
     </option>
@@ -183,12 +183,12 @@
       <workItem from="1560905517898" duration="9358000" />
       <workItem from="1560990347424" duration="9331000" />
       <workItem from="1561015395442" duration="4997000" />
-      <workItem from="1561096551925" duration="526000" />
+      <workItem from="1561096551925" duration="1618000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31182000" />
+    <option name="totallyTimeSpent" value="32274000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="26" width="1922" height="1001" extended-state="6" />
@@ -271,13 +271,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parseData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4932">
-          <caret line="274" column="32" selection-start-line="274" selection-start-column="32" selection-end-line="274" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -292,10 +285,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/parseData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tcpServer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="63" column="32" selection-start-line="63" selection-start-column="32" selection-end-line="63" selection-end-column="32" />
+        <state relative-caret-position="72">
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
         </state>
       </provider>
     </entry>

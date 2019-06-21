@@ -2,12 +2,9 @@
 
 date_default_timezone_set('Asia/Shanghai');
 
-include_once "parseData.php";
+define("DEBUG_PRINTF", true);
 
-$server = new swoole_server("0.0.0.0", 9504);
-$server->on('connect', function ($server, $fd) {
-    echo "connection open: {$fd}\n";
-});
+include_once "parseData.php";
 
 
 $table = new Swoole\Table(10240);
@@ -16,6 +13,10 @@ $table->column('deviceId', swoole_table::TYPE_STRING, 1024);
 $table->column('lastRequestMessage', swoole_table::TYPE_INT, 4);
 $table->create();
 
+$server = new swoole_server("0.0.0.0", 9504);
+$server->on('connect', function ($server, $fd) {
+    debugPrintf("connection open: {$fd}\n");
+});
 
 $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) {
     /** @var swoole_server $server */
@@ -54,7 +55,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         $server->send($fd, $message);
 
         $server->tick(20000, function ($timerId) use ($server, $fd, $table) {
-            echo sprintf("tick fd%d timerid %d\n", $fd, $timerId);
+            debugPrintf("tick fd%d timerid %d\n", $fd, $timerId);
             $row = $table->get($fd);
             if (!$row) {
                 $server->clearTimer($timerId);
@@ -150,7 +151,7 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
 
 $server->on('Close', function ($server, $fd) use ($table) {
     $table->del($fd);
-    echo "connection close: {$fd}\n";
+    debugPrintf("connection close: {$fd}\n");
 });
 $server->start();
 

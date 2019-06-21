@@ -1,6 +1,5 @@
 <?php
 
-define("DEBUG_PRINTF", true);
 
 function debugPrintf()
 {
