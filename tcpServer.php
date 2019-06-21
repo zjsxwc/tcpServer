@@ -26,8 +26,6 @@ $server->on('Receive', function ($server, $fd, $reactor_id, $data) use ($table) 
         return;
     }
 
-    $currentTime = time();
-
     $deviceId = null;
     $row = $table->get($fd);
     if ($row) {
