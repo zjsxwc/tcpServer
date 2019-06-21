@@ -46,6 +46,8 @@ for (var json of jsonList) {
     text += line;
 }
 textPre.textContent = text;
+
+setTimeout(function(){location.reload();},20000);
 </script></body>
 </html>"
     );
